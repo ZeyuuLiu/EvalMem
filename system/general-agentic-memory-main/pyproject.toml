@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gam"
+version = "0.1.0"
+description = "GAM - General Agentic Memory (Text & Video)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+
+dependencies = [
+    "pydantic>=2.0",
+    "tiktoken>=0.5",
+    "openai>=1.0",
+    "tqdm>=4.60",
+    "docker>=7.0",
+    "requests>=2.28",
+    "python-dotenv>=1.0",
+    "json_repair>=0.58.0"
+]
+
+[project.optional-dependencies]
+web = ["flask>=3.0", "rank_bm25>=0.2"]
+api = ["fastapi>=0.115", "uvicorn>=0.34"]
+pdf = ["PyPDF2>=3.0"]
+sglang = ["sglang"]
+all = ["flask>=3.0", "PyPDF2>=3.0", "rank_bm25>=0.2", "fastapi>=0.115", "uvicorn>=0.34"]
+
+[project.scripts]
+gam-add = "gam.cli:cli_add"
+gam-request = "gam.cli:cli_request"
+gam-skill-prompt = "gam.cli:cli_skill_prompt"
+
+[tool.setuptools.packages.find]
+where = ["src"]

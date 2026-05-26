@@ -1,0 +1,23 @@
+# Memory Chain - Dependencies
+# ===========================
+# Install with: pip install -r requirements.txt
+
+# Core Dependencies
+openai>=1.0.0                    # OpenAI API client
+torch>=2.8.0                     # PyTorch deep learning framework
+sentence-transformers>=2.2.0    # Sentence embedding models
+numpy>=1.22.0                   # Numerical computing
+nltk>=3.9.0                     # Tokenization / stopwords used by O-Mem
+
+# Configuration & Utilities
+pyyaml>=6.0                     # YAML config file parsing
+tqdm>=4.66.3                    # Progress bars
+aiofiles>=23.0.0                # Async file operations
+
+# Optional Dependencies (for experiments)
+tiktoken>=0.5.0                 # OpenAI tokenizer
+FlagEmbedding>=1.2.0            # BGE embedding models (optional, for custom embeddings)
+scikit-learn>=1.0.0             # Machine learning utilities (cosine similarity)
+transformers==4.57.6            # Required for local Qwen3 embedding loading
+tokenizers==0.22.2              # Matching tokenizer version for transformers 4.57.6
+

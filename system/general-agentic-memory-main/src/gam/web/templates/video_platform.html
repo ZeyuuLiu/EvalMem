@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎬 Video GAM Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/video_platform.css') }}">
+</head>
+<body>
+    <div class="bg-pattern"></div>
+
+    <header class="header">
+        <div class="logo">
+            <span class="logo-icon">🎬</span>
+            <span class="logo-text">Video GAM Platform</span>
+        </div>
+        <div class="header-actions">
+            <a href="/" class="nav-link">📝 Text</a>
+            <a href="/video" class="nav-link active">🎬 Video</a>
+            <button class="btn btn-secondary btn-sm" onclick="resetAll()">
+                🔄 New
+            </button>
+        </div>
+    </header>
+
+    <div class="app-container">
+        <!-- ========== Left Panel: Upload & File Tree ========== -->
+        <div class="panel left-panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <span class="icon">🎬</span>
+                    <span>Control Panel</span>
+                </div>
+                <span class="badge badge-info" id="process-status">Ready</span>
+            </div>
+            <div class="panel-body">
+                <!-- Upload Section -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <span>📤</span>
+                            <span>Upload Video</span>
+                        </div>
+                    </div>
+                    <div class="section-content">
+                        <div class="upload-zone" id="upload-zone">
+                            <span class="icon">🎥</span>
+                            <div class="text">
+                                <p>Drop video or <span>browse</span></p>
+                                <p style="font-size: 10px; margin-top: 2px; color: var(--text-muted);">MP4, AVI, MKV, MOV</p>
+                            </div>
+                            <input type="file" id="file-input" accept=".mp4,.avi,.mkv,.mov,.webm">
+                        </div>
+                        <div id="file-info" style="margin-top: 8px; display: none;">
+                            <div class="file-badge" id="file-badge">
+                                <span>🎥</span>
+                                <span id="file-name">video.mp4</span>
+                            </div>
+                        </div>
+
+                        <!-- Optional subtitle upload -->
+                        <div style="margin-top: 10px;">
+                            <label class="form-label" style="font-size: 11px; color: var(--text-muted);">📝 Subtitles (optional)</label>
+                            <div class="upload-zone" id="srt-upload-zone" style="padding: 12px;">
+                                <div class="text">
+                                    <p style="font-size: 11px;">Drop .srt file or <span>browse</span></p>
+                                </div>
+                                <input type="file" id="srt-input" accept=".srt,.vtt">
+                            </div>
+                            <div id="srt-info" style="margin-top: 4px; display: none;">
+                                <div class="file-badge" id="srt-badge" style="font-size: 11px; padding: 4px 10px;">
+                                    <span>📝</span>
+                                    <span id="srt-name">subtitles.srt</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div style="display: flex; gap: 8px; margin-top: 12px;">
+                            <button class="btn btn-primary" id="process-btn" onclick="processVideo()" style="flex: 1;">
+                                🚀 Build Video GAM
+                            </button>
+                            <button class="btn btn-secondary" onclick="showLoadModal()" style="flex-shrink: 0;">
+                                📂 Load
+                            </button>
+                        </div>
+
+                        <!-- Output Paths -->
+                        <div class="output-paths" id="output-paths" style="display: none;">
+                            <div class="path-item">
+                                <span class="label">🎬</span>
+                                <span class="value" id="gam-path-display"></span>
+                            </div>
+                        </div>
+
+                        <!-- Progress -->
+                        <div class="progress-container" id="progress-container">
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
+                            </div>
+                            <div class="progress-status" id="progress-status">Initializing...</div>
+                            <div class="log-output" id="log-output"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- File Tree Section -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <span>🗂️</span>
+                            <span>Files</span>
+                        </div>
+                        <div style="display: flex; gap: 4px; align-items: center;">
+                            <span id="auto-refresh-indicator" style="display: none; font-size: 10px; color: var(--accent-info);">🔄</span>
+                            <button class="btn btn-secondary btn-sm" onclick="refreshTree()" style="padding: 3px 6px; font-size: 10px;">
+                                🔄
+                            </button>
+                        </div>
+                    </div>
+                    <div class="section-content scrollable" id="tree-view">
+                        <div class="empty-state">
+                            <span class="icon">📂</span>
+                            <h3>No output</h3>
+                            <p>Upload & build video to view GAM structure</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span>📁</span>
+                    <span class="value" id="stat-dirs">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>📄</span>
+                    <span class="value" id="stat-files">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>🎥</span>
+                    <span class="value" id="stat-videos">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== Middle Panel: Unified Display ========== -->
+        <div class="panel middle-panel">
+            <div class="display-bar" id="display-bar">
+                <span class="display-bar-icon" id="display-bar-icon">📄</span>
+                <span class="display-bar-name" id="display-bar-name">Select a file to preview</span>
+            </div>
+            <div class="display-area" id="display-area">
+                <!-- Empty state -->
+                <div class="display-empty" id="display-empty">
+                    <span class="icon">🎬</span>
+                    <h3>No file selected</h3>
+                    <p>Click a file in the tree to preview.<br>Video files will play here, text files will be displayed.</p>
+                </div>
+                <!-- Video view -->
+                <div class="display-video" id="display-video" style="display: none;">
+                    <video class="video-player" id="video-player" controls>
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <!-- Text/content view -->
+                <div class="display-content" id="display-content" style="display: none;"></div>
+            </div>
+        </div>
+
+        <!-- ========== Right Panel: Video Research Chat ========== -->
+        <div class="panel right-panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <span class="icon">🔍</span>
+                    <span>Video Research</span>
+                </div>
+                <div class="chat-status">
+                    <span class="dot" id="chat-status-dot"></span>
+                    <span id="chat-status-text">Ready</span>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chat-messages">
+                <div class="chat-empty-state" id="chat-empty-state">
+                    <span class="icon">💬</span>
+                    <h3>Ask about your Video</h3>
+                    <p>The Research Agent will explore your video GAM knowledge base to answer questions.</p>
+                    <div class="chat-suggestions">
+                        <button class="chat-suggestion" onclick="askSuggestion('What is this video about?')">
+                            🎬 What is this video about?
+                        </button>
+                        <button class="chat-suggestion" onclick="askSuggestion('Summarize the key segments')">
+                            📋 Summarize key segments
+                        </button>
+                        <button class="chat-suggestion" onclick="askSuggestion('What happens at the beginning?')">
+                            🎯 What happens at the beginning?
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-input-container">
+                <div class="chat-input-wrapper">
+                    <textarea
+                        class="chat-input"
+                        id="chat-input"
+                        placeholder="Ask about the video..."
+                        rows="1"
+                        onkeydown="handleChatKeydown(event)"
+                        oninput="autoResizeInput(this)"
+                    ></textarea>
+                    <button class="chat-send-btn" id="chat-send-btn" onclick="sendMessage()">
+                        ➤
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Directory Modal -->
+    <div class="modal-overlay" id="load-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <span>📂</span>
+                    <span>Load Video GAM Directory</span>
+                </div>
+                <button class="modal-close" onclick="hideLoadModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">🎬 Video GAM Directory</label>
+                    <input type="text" class="form-input" id="load-gam-path"
+                           placeholder="/path/to/video_gam_output">
+                    <div class="form-hint">Enter the path to an existing Video GAM output directory.</div>
+                </div>
+                <div style="margin-top: 8px;">
+                    <div class="form-label" style="margin-bottom: 8px;">📁 Browse Folders</div>
+                    <div class="folder-browser">
+                        <div class="folder-browser-header">
+                            <button class="folder-nav-btn" onclick="browserGoUp()" title="Go up">⬆️</button>
+                            <div class="folder-current-path" id="browser-current-path">/</div>
+                            <button class="folder-nav-btn" onclick="browserRefresh()" title="Refresh">🔄</button>
+                        </div>
+                        <div class="folder-list" id="folder-list">
+                            <div class="folder-loading">Loading...</div>
+                        </div>
+                    </div>
+                    <div class="form-hint" style="margin-top: 6px;">Click folder to enter, or use the 🗂️ button to select as GAM dir</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="hideLoadModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="loadDirectory()">📂 Load</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/video_platform.js') }}"></script>
+</body>
+</html>

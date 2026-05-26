@@ -1,0 +1,26 @@
+- relation: subject_of
+  description: A source or event page is about a specific entity.
+- relation: topic_of
+  description: A source or event page belongs to a controlled topic page.
+- relation: evidence_in
+  description: A synthesized page cites a source page as direct evidence.
+- relation: preceded_by
+  description: An event or state is preceded by another event or state in time.
+- relation: followed_by
+  description: An event or state is followed by another event or state in time.
+- relation: contradicts
+  description: Two pages express conflicting facts that should be preserved with warnings.
+- relation: derived_from
+  description: An analysis page is synthesized from one or more other wiki pages.
+- relation: co_occurred_with
+  description: Two entities co-occurred in the same source context.
+- relation: part_of
+  description: A page represents a sub-event or sub-topic of a broader parent page.
+- relation: mentions
+  description: Fallback relation for plain mention when no stronger semantics are available.
+- relation: version_of
+  description: A newer version supersedes an older version of the same entry.
+- relation: superseded_by
+  description: Backward-compatible version transition relation mirroring deprecated_by.
+- relation: corroborated_by
+  description: Another source independently supports the same fact or event.

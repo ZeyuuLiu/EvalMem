@@ -1,0 +1,65 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "evalmem"
+version = "0.6.6"
+description = "EvalMem: An operation-level diagnostic framework for long-term memory systems"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [
+    { name = "Anonymous Authors" },
+]
+keywords = ["memory", "evaluation", "LLM", "long-term-memory", "agent"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "openai>=1.30.0",
+    "requests>=2.31.0",
+    "PyYAML>=6.0",
+    "numpy>=1.24.0",
+    "tqdm>=4.65.0",
+]
+
+[project.optional-dependencies]
+agentic-rag = [
+    "langchain>=0.3.0",
+    "langchain-core>=0.3.0",
+    "langchain-openai>=0.2.0",
+    "langchain-community>=0.3.0",
+    "langchain-qdrant>=0.2.0",
+    "langchain-text-splitters>=0.3.0",
+    "langgraph>=0.2.0",
+    "qdrant-client>=1.10.0",
+    "sentence-transformers>=3.0.0",
+    "python-dotenv>=1.0.0",
+    "transformers>=4.51.0",
+]
+dataset = [
+    "PyYAML>=6.0",
+    "requests>=2.31.0",
+]
+dev = [
+    "ruff>=0.5.0",
+]
+
+[project.urls]
+"Homepage" = "https://anonymous.4open.science"
+"Source" = "https://anonymous.4open.science"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+

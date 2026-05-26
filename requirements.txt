@@ -1,0 +1,10 @@
+# Core runtime dependencies for EvalMem (evaluation framework only).
+# To enable the high-recall encoding examiner via Agentic RAG, also install
+# the dependencies listed in agentic-rag/requirements.txt.
+# To run dataset construction, also install dataset_builder/requirements.txt.
+
+openai>=1.30.0
+requests>=2.31.0
+PyYAML>=6.0
+numpy>=1.24.0
+tqdm>=4.65.0

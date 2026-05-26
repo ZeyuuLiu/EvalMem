@@ -1,0 +1,134 @@
+# 10 个虚拟画像的预设属性（确定性，不靠 LLM 采样）
+# 设计原则：覆盖年龄/教育/职业/沟通风格/状态变动倾向/NEG 易感性各维度
+personas_predefined:
+  - persona_id: "p_01"
+    age: 22
+    gender: "male"
+    education: "本科在读"
+    stage: "学生"
+    communication_style: "口语化"
+    change_propensity: "高"
+    neg_sensitivity: "经常修正过往"
+    preferred_domains: ["学习", "人际"]
+
+  - persona_id: "p_02"
+    age: 28
+    gender: "female"
+    education: "硕士"
+    stage: "初入职场"
+    communication_style: "简洁直接"
+    change_propensity: "中"
+    neg_sensitivity: "高隐私敏感"
+    preferred_domains: ["工作", "财务"]
+
+  - persona_id: "p_03"
+    age: 32
+    gender: "female"
+    education: "硕士"
+    stage: "中年专业"
+    communication_style: "详尽叙述"
+    change_propensity: "中"
+    neg_sensitivity: "倾向回避具体"
+    preferred_domains: ["工作", "健康"]
+
+  - persona_id: "p_04"
+    age: 38
+    gender: "male"
+    education: "本科"
+    stage: "中年专业"
+    communication_style: "技术腔"
+    change_propensity: "低"
+    neg_sensitivity: "高隐私敏感"
+    preferred_domains: ["工作", "学习"]
+
+  - persona_id: "p_05"
+    age: 45
+    gender: "female"
+    education: "博士"
+    stage: "中年专业"
+    communication_style: "婉转含蓄"
+    change_propensity: "中"
+    neg_sensitivity: "经常修正过往"
+    preferred_domains: ["健康", "人际"]
+
+  - persona_id: "p_06"
+    age: 52
+    gender: "male"
+    education: "本科"
+    stage: "自由职业"
+    communication_style: "详尽叙述"
+    change_propensity: "高"
+    neg_sensitivity: "倾向回避具体"
+    preferred_domains: ["财务", "兴趣"]
+
+  - persona_id: "p_07"
+    age: 58
+    gender: "female"
+    education: "高中"
+    stage: "居家照护"
+    communication_style: "口语化"
+    change_propensity: "低"
+    neg_sensitivity: "高隐私敏感"
+    preferred_domains: ["健康", "人际"]
+
+  - persona_id: "p_08"
+    age: 35
+    gender: "male"
+    education: "硕士"
+    stage: "中年专业"
+    communication_style: "简洁直接"
+    change_propensity: "高"
+    neg_sensitivity: "经常修正过往"
+    preferred_domains: ["工作", "财务"]
+
+  - persona_id: "p_09"
+    age: 67
+    gender: "female"
+    education: "高中"
+    stage: "退休"
+    communication_style: "婉转含蓄"
+    change_propensity: "低"
+    neg_sensitivity: "高隐私敏感"
+    preferred_domains: ["健康", "兴趣"]
+
+  - persona_id: "p_10"
+    age: 25
+    gender: "non-binary"
+    education: "博士在读"
+    stage: "学生"
+    communication_style: "技术腔"
+    change_propensity: "中"
+    neg_sensitivity: "倾向回避具体"
+    preferred_domains: ["学习", "财务"]
+
+# ρ 的派生映射
+rho_map:
+  低: 0.05
+  中: 0.15
+  高: 0.30
+
+# 沟通风格的详细规则（注入到 user_simulator prompt）
+communication_style_detailed:
+  口语化: |
+    - 使用口语词、感叹词（"哎"、"哇"、"嗯"）
+    - 句子可不完整，可以有"那个"、"就是"等填充词
+    - 偶尔用网络流行语
+    - 表情符号可以使用
+  简洁直接: |
+    - 句子短，一句能说完不要两句
+    - 不啰嗦背景
+    - 直接提问或陈述
+    - 不用感叹词与修饰
+  详尽叙述: |
+    - 喜欢铺陈背景再提问（"最近发生了一件事..."）
+    - 单条消息可以较长（30-60字）
+    - 经常带情感色彩与时间描述
+  婉转含蓄: |
+    - 不直接说事实，倾向用比喻、暗示
+    - 多用反问、疑问
+    - 情感表达内敛
+    - 暴露状态时尤其要委婉，可用"听说"、"有人"等转移视角
+  技术腔: |
+    - 使用专业术语
+    - 表达精确，喜欢用数字、参数
+    - 句子结构严密

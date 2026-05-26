@@ -1,0 +1,5 @@
+# Dependencies for the dynamic-benchmark dataset builder (DynaMem-Bench).
+# Python >= 3.9.
+
+requests>=2.31.0
+PyYAML>=6.0

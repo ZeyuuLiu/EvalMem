@@ -1,0 +1,44 @@
+# MemWiki v4 controlled topic vocabulary.
+# v3 优化 3.3 / v4 §2.4：所有 source / topic 页面的 tags.topics 必须从该列表选取。
+# 不命中时，TopicNormalizer 走 Levenshtein + 向量最近邻回退；仍不匹配时落到 "other"。
+topics:
+  - dating
+  - relationship_status
+  - family
+  - parenting
+  - work_career
+  - work_project
+  - education
+  - health
+  - mental_state
+  - exercise
+  - travel
+  - hobby
+  - food
+  - pet
+  - finance
+  - housing
+  - location
+  - decision
+  - preference
+  - opinion
+  - belief
+  - religion
+  - politics
+  - entertainment
+  - music
+  - movies
+  - books
+  - art
+  - sports
+  - technology
+  - social_event
+  - friendship
+  - conflict
+  - achievement
+  - milestone
+  - plan
+  - schedule
+  - memory_recall
+  - small_talk
+  - other

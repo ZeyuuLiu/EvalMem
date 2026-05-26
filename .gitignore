@@ -1,0 +1,136 @@
+# ---------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.cover
+
+# ---------------------------------------------------------------------------
+# Virtual env
+# ---------------------------------------------------------------------------
+.venv/
+venv/
+env/
+ENV/
+
+# ---------------------------------------------------------------------------
+# Build artifacts
+# ---------------------------------------------------------------------------
+build/
+dist/
+*.egg-info/
+*.egg
+pip-wheel-metadata/
+
+# ---------------------------------------------------------------------------
+# Local secrets (NEVER commit)
+# ---------------------------------------------------------------------------
+configs/keys.local.json
+dataset_builder/configs/keys.local.json
+**/keys.local.json
+.env
+.env.*
+
+# ---------------------------------------------------------------------------
+# Runtime outputs / logs / temp files
+# ---------------------------------------------------------------------------
+outputs/
+runs/
+logs/
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+.ipynb_checkpoints/
+.cache/
+
+# ---------------------------------------------------------------------------
+# IDE / editor
+# ---------------------------------------------------------------------------
+.idea/
+.vscode/
+*.code-workspace
+
+# ---------------------------------------------------------------------------
+# OS junk
+# ---------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---------------------------------------------------------------------------
+# Internal docs / private references (not part of the public release)
+# ---------------------------------------------------------------------------
+docs/
+reference_docs/
+PROJECT_EXPLANATION_CN.md
+
+# ---------------------------------------------------------------------------
+# Embedding model weights  (download separately — see README §Data & Models)
+# ---------------------------------------------------------------------------
+Qwen/
+Qwen3-Embedding-*/
+**/Qwen3-Embedding-*/
+models/
+*.safetensors
+*.bin
+*.gguf
+*.pt
+*.pth
+*.onnx
+
+# ---------------------------------------------------------------------------
+# Datasets  (download separately — see README §Data & Models)
+#   - LoCoMo:           data/locomo10.json + duplicates inside vendored systems
+#   - LongMemEval-S:    data/longmemeval*
+#   - DynaMem-Bench:    dataset_builder/data/ (regenerate via dataset_builder)
+# ---------------------------------------------------------------------------
+data/locomo*.json
+data/longmemeval*/
+data/longmemeval*.json
+data/dynamem*/
+system/**/locomo10.json
+system/**/longmemeval*.json
+system/**/longmemeval*/
+
+# Large agentic-rag fixture (a 16MB Chinese novel used only for local demos).
+# Keep the small demo.txt sample as the minimum reproducible example.
+agentic-rag/sample_docs/dldl2.txt
+agentic-rag/sample_docs/*.pdf
+agentic-rag/sample_docs/*.zip
+
+# ---------------------------------------------------------------------------
+# Vector / cache stores
+# ---------------------------------------------------------------------------
+qdrant_storage/
+chroma_storage/
+faiss_index/
+*.sqlite
+*.sqlite3
+*.db
+
+# ---------------------------------------------------------------------------
+# Dataset-builder runtime artifacts
+# ---------------------------------------------------------------------------
+dataset_builder/cache/
+dataset_builder/data/
+dataset_builder/runtime/cache/
+
+# ---------------------------------------------------------------------------
+# Notebooks scratch / profiling
+# ---------------------------------------------------------------------------
+*.ipynb_checkpoints
+profile_*.json
+*.prof

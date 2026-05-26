@@ -1,0 +1,311 @@
+:root {
+    --bg-primary: #f5f7fa;
+    --bg-secondary: #ffffff;
+    --bg-card: #ffffff;
+    --bg-card-hover: #f0f2f5;
+    --border-color: #e0e3e8;
+    --text-primary: #1a1a2e;
+    --text-secondary: #5a5a7a;
+    --text-muted: #9a9ab0;
+    --accent-text: #e44d8a;
+    --accent-video: #f59e0b;
+    --gradient-text: linear-gradient(135deg, #e44d8a 0%, #8b5cf6 100%);
+    --gradient-video: linear-gradient(135deg, #f59e0b 0%, #e44d8a 100%);
+    --gradient-title: linear-gradient(135deg, #e44d8a 0%, #8b5cf6 50%, #06b6d4 100%);
+    --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.08);
+    --shadow-card-hover: 0 16px 48px rgba(0, 0, 0, 0.12);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Animated background */
+.bg-pattern {
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 600px 400px at 25% 30%, rgba(228, 77, 138, 0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 500px 350px at 75% 60%, rgba(139, 92, 246, 0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 400px 300px at 50% 80%, rgba(6, 182, 212, 0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.container {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 40px 20px;
+    max-width: 1200px;
+    width: 100%;
+}
+
+/* Logo / Title */
+.logo {
+    font-size: 56px;
+    margin-bottom: 12px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.title {
+    font-size: 42px;
+    font-weight: 700;
+    background: var(--gradient-title);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+    letter-spacing: -1px;
+}
+
+.subtitle {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-bottom: 60px;
+    line-height: 1.6;
+}
+
+.subtitle span {
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+/* Cards */
+.cards {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.card {
+    position: relative;
+    width: 360px;
+    padding: 48px 36px 40px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    text-decoration: none;
+    color: inherit;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+}
+
+.card.text-card::before {
+    background: linear-gradient(135deg, rgba(228, 77, 138, 0.06) 0%, rgba(139, 92, 246, 0.06) 100%);
+}
+
+.card.video-card::before {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.06) 0%, rgba(228, 77, 138, 0.06) 100%);
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-card-hover);
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+.card.text-card:hover {
+    border-color: rgba(228, 77, 138, 0.3);
+}
+
+.card.video-card:hover {
+    border-color: rgba(245, 158, 11, 0.3);
+}
+
+.card > * {
+    position: relative;
+    z-index: 1;
+}
+
+.card-icon {
+    font-size: 52px;
+    margin-bottom: 20px;
+    display: block;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover .card-icon {
+    transform: scale(1.15);
+}
+
+.card-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.text-card .card-title {
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.video-card .card-title {
+    background: var(--gradient-video);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.card-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 24px;
+}
+
+.card-features {
+    list-style: none;
+    text-align: left;
+    margin-bottom: 28px;
+}
+
+.card-features li {
+    font-size: 13px;
+    color: var(--text-muted);
+    padding: 5px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-features li .check {
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.text-card .card-features .check { color: #e44d8a; }
+.video-card .card-features .check { color: #f59e0b; }
+.lh-card .card-features .check { color: #6366f1; }
+
+.card-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #fff;
+}
+
+.text-card .card-btn {
+    background: var(--gradient-text);
+}
+
+.video-card .card-btn {
+    background: var(--gradient-video);
+}
+
+.lh-card .card-btn {
+    background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+}
+
+.card-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(228, 77, 138, 0.25);
+}
+
+.card-btn .arrow {
+    transition: transform 0.3s ease;
+    font-size: 16px;
+}
+
+.card:hover .card-btn .arrow {
+    transform: translateX(4px);
+}
+
+/* Footer */
+.footer {
+    position: fixed;
+    bottom: 24px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 1;
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+.footer a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.footer a:hover {
+    color: var(--accent-text);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .cards {
+        flex-wrap: wrap;
+    }
+
+    .card {
+        flex: 1 1 280px;
+        max-width: 400px;
+    }
+}
+
+@media (max-width: 700px) {
+    .cards {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .title {
+        font-size: 32px;
+    }
+
+    .logo {
+        font-size: 44px;
+    }
+}

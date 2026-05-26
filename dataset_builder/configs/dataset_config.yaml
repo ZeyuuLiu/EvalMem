@@ -1,0 +1,54 @@
+# DynaMem-Bench global config (paper §3 "Dynamic Benchmark")
+dataset_version: "v2.0"
+seed: 20260512                       # 全局随机种子（控制状态采样、值选择等）
+
+scale:
+  num_personas: 10
+  num_sessions: 10                   # 每画像 10 session
+  num_turns_per_session: 20          # 每 session 20 turn
+  num_questions_per_session: 10      # 每 session 末 10 题
+  # 总计：10 画像 × 10 session × 20 turn = 2000 轮对话
+  # 总计：10 画像 × 10 session × 10 题 = 1000 题
+
+state_evolution:
+  main_core_change_session: 6        # 主核心变更发生在第 6 session
+  rollback_personas: ["p_03", "p_06", "p_08"]   # 30% 画像触发回滚（v2 创新点）
+  rollback_session: 9
+  cascade_immediate_personas: ["p_02", "p_04", "p_07"]
+  cascade_delayed_personas: ["p_01", "p_03", "p_05", "p_06", "p_08", "p_09", "p_10"]
+
+question_distribution:
+  pos_per_persona: 60               # 每画像 60 POS 题（40 fresh + 20 tracking）
+  neg_per_persona: 20               # 每画像 20 NEG 题（4 子类）
+  pos_fresh_target: 40              # POS-fresh 目标数（每题 1 ask）
+  pos_tracking_target: 20           # POS-tracking 目标数（每题 2 asks 上限）
+  pos_tracking_max_asks: 2          # POS-tracking 单题最多 ask 多少次（控制总询问数）
+  question_sampler_target: 180      # question_sampler 草稿请求量（用于补足 POS pool）
+  per_session:
+    pos_fresh_avg: 4                # 每 session 平均 4 道新增 POS
+    pos_tracking_avg: 4             # 每 session 平均 4 道 state-tracking 询问
+    neg_avg: 2                      # 每 session 平均 2 道 NEG（4 子类分散）
+
+llm:
+  builder_model: "gpt-4o-mini"
+  builder_temperature: 0.3
+  schema_temperature: 0.0
+  user_sim_model: "gpt-4o-mini"
+  user_sim_temperature: 0.7
+  exposure_check_model: "gpt-4o-mini"
+  oracle_dialogue_model: "gpt-4o-mini"
+  verifier_model: "gpt-4o-mini"
+  verifier_temperature: 0.0
+  request_timeout_sec: 60
+  max_retries: 3
+  retry_backoff_sec: 2
+
+paths:
+  data_root: "./data"
+  prompts_root: "./configs/prompts"
+  cache_root: "./cache"
+
+quality_thresholds:
+  verification_pass_rate_min: 0.90
+  human_kappa_min: 0.75
+  exposure_completion_rate_min: 1.00

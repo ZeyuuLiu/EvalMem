@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠 GAM Long Horizontal Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/long_horizontal_platform.css') }}">
+</head>
+<body>
+    <div class="bg-pattern"></div>
+
+    <header class="header">
+        <div class="logo">
+            <span class="logo-icon">🧠</span>
+            <span class="logo-text">GAM Long Horizontal</span>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-secondary btn-sm" onclick="resetAll()">🔄 New</button>
+        </div>
+    </header>
+
+    <div class="app-container">
+        <!-- ========== Left Panel ========== -->
+        <div class="panel left-panel">
+            <div class="panel-header">
+                <div class="panel-title"><span class="icon">📥</span><span>Control</span></div>
+                <span class="badge badge-info" id="request-status">Ready</span>
+            </div>
+            <div class="panel-body">
+                <!-- Upload Section -->
+                <div class="section" id="section-upload">
+                    <div class="section-header">
+                        <div class="section-title"><span>📤</span><span>Documents</span></div>
+                        <span class="badge badge-info" id="doc-count-badge" style="display:none;">0</span>
+                    </div>
+                    <div class="section-content">
+                        <div class="upload-zone" id="upload-zone">
+                            <span class="icon">📁</span>
+                            <div class="text">
+                                <p>Drop files or <span>browse</span></p>
+                                <p style="font-size:10px;margin-top:2px;color:var(--text-muted);">PDF, TXT, MD — multiple files supported</p>
+                            </div>
+                            <input type="file" id="file-input" accept=".pdf,.txt,.md" multiple>
+                        </div>
+                        <div id="doc-list" class="doc-list"></div>
+
+                        <!-- Question Input -->
+                        <div class="form-group" style="margin-top:10px;">
+                            <label class="form-label">❓ Research Question</label>
+                            <textarea class="text-input" id="question-input" rows="3"
+                                placeholder="Enter your research question..."></textarea>
+                        </div>
+                        <button class="btn btn-primary btn-block" id="request-btn" onclick="startRequest()">
+                            🚀 Request Agent
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Query Evolution -->
+                <div class="section" id="section-queries">
+                    <div class="section-header">
+                        <div class="section-title"><span>🔍</span><span>Query Evolution</span></div>
+                    </div>
+                    <div class="section-content scrollable" id="query-evolution-list">
+                        <div class="empty-state">
+                            <span class="icon">🔍</span>
+                            <p>Agent queries will appear here</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GAM System -->
+                <div class="section" id="section-gam">
+                    <div class="section-header">
+                        <div class="section-title"><span>🗂️</span><span>GAM System</span></div>
+                        <button class="btn btn-secondary btn-sm" onclick="refreshGAMTree()" style="padding:3px 6px;font-size:10px;">🔄</button>
+                    </div>
+                    <div class="section-content scrollable" id="gam-tree-view">
+                        <div class="empty-state">
+                            <span class="icon">📂</span>
+                            <p>GAM tree after memorize</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== Middle Panel: Agent Conversation ========== -->
+        <div class="panel middle-panel">
+            <div class="panel-header">
+                <div class="panel-title"><span class="icon">💬</span><span>Agent Conversation</span></div>
+                <div class="conv-status">
+                    <span class="dot" id="conv-status-dot"></span>
+                    <span id="conv-status-text">Idle</span>
+                </div>
+            </div>
+            <div class="panel-body" id="conversation-container">
+                <div class="conv-empty-state" id="conv-empty-state">
+                    <span class="icon">🤖</span>
+                    <h3>Agent Conversation Timeline</h3>
+                    <p>Upload documents, enter a question, and click "Request Agent" to see the agent's conversation with the LLM API in real-time.</p>
+                </div>
+                <!-- System prompt banner -->
+                <div class="system-prompt-banner" id="system-prompt-banner" style="display:none;">
+                    <div class="system-prompt-label">📋 System Prompt</div>
+                    <div class="system-prompt-content" id="system-prompt-content"></div>
+                    <button class="system-prompt-toggle" onclick="toggleSystemPrompt()">▼ Expand</button>
+                </div>
+                <!-- Conversation timeline -->
+                <div class="conversation-timeline" id="conversation-timeline"></div>
+            </div>
+        </div>
+
+        <!-- ========== Right Panel: Chat ========== -->
+        <div class="panel right-panel">
+            <div class="panel-header">
+                <div class="panel-title"><span class="icon">🔍</span><span>Research Assistant</span></div>
+                <div class="chat-status">
+                    <span class="dot" id="chat-status-dot"></span>
+                    <span id="chat-status-text">Ready</span>
+                </div>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="chat-empty-state" id="chat-empty-state">
+                    <span class="icon">💬</span>
+                    <h3>Ask about your GAM</h3>
+                    <p>After the agent finishes and builds the GAM, ask questions about the knowledge base here.</p>
+                    <div class="chat-suggestions">
+                        <button class="chat-suggestion" onclick="askSuggestion('Summarize the key findings')">📋 Summarize key findings</button>
+                        <button class="chat-suggestion" onclick="askSuggestion('What are the main topics covered?')">📝 Main topics covered?</button>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input-container">
+                <div class="chat-input-wrapper">
+                    <textarea class="chat-input" id="chat-input" placeholder="Ask a question..."
+                        rows="1" onkeydown="handleChatKeydown(event)" oninput="autoResizeInput(this)"></textarea>
+                    <button class="chat-send-btn" id="chat-send-btn" onclick="sendChatMessage()">➤</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/long_horizontal_platform.js') }}"></script>
+</body>
+</html>

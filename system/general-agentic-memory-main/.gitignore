@@ -1,0 +1,64 @@
+# --- Python ---
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Virtual Environments (显式声明)
+venv/
+env/
+.venv/
+ENV/
+
+# --- Security (重要) ---
+# 环境变量，防止泄露密钥
+.env
+.env.local
+.env.*.local
+
+# --- IDE & Editors ---
+# 你的编辑器
+.trae/
+# 其他常见编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- Logs & DB ---
+*.log
+*.db
+*.sqlite
+
+# --- Project Specific (你的特定规则) ---
+examples/long_video_example/input/
+examples/long_video_example/output/
+demo/node_modules/
+demo/backend/cases/

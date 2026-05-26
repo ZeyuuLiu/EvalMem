@@ -1,0 +1,139 @@
+# 候选状态变量库（按领域分类，question_sampler 与 state_schema 从中挑选）
+# 每个变量含 var_name (snake_case英文) / display_name (中文) / values (候选离散值) / description
+
+工作:
+  - var_name: "current_employment_status"
+    display_name: "在职状态"
+    values: ["在职全职", "在职兼职", "失业", "自雇创业", "实习中"]
+    description: "用户当前的就业状态"
+    semantic_dynamic_score: 1.0
+  - var_name: "job_title"
+    display_name: "职位"
+    values: ["UX设计师", "PM", "工程师", "市场专员", "销售", "教师", "实习生", "自由职业者"]
+    description: "用户当前的工作头衔"
+    semantic_dynamic_score: 1.0
+  - var_name: "city"
+    display_name: "所在城市"
+    values: ["Shanghai", "Beijing", "Hangzhou", "Shenzhen", "Chengdu", "Guangzhou"]
+    description: "用户当前居住/工作的城市"
+    semantic_dynamic_score: 0.9
+  - var_name: "commute_mode"
+    display_name: "通勤方式"
+    values: ["地铁", "开车", "公交", "步行", "在家办公"]
+    description: "用户日常通勤方式"
+    semantic_dynamic_score: 0.7
+  - var_name: "work_team_size"
+    display_name: "团队规模"
+    values: ["1-5人小团队", "6-15人中团队", "15-50人大团队", "50+人大型组织"]
+    description: "用户当前工作团队的人数"
+    semantic_dynamic_score: 0.6
+
+健康:
+  - var_name: "exercise_frequency"
+    display_name: "锻炼频率"
+    values: ["每周3次以上", "每周1-2次", "几乎不运动"]
+    description: "用户日常锻炼频率"
+    semantic_dynamic_score: 0.8
+  - var_name: "diet_restriction"
+    display_name: "饮食限制"
+    values: ["无限制", "素食", "低糖", "无乳制品", "低盐"]
+    description: "用户当前的饮食限制"
+    semantic_dynamic_score: 0.7
+  - var_name: "sleep_pattern"
+    display_name: "作息"
+    values: ["早睡早起", "晚睡晚起", "作息不规律"]
+    description: "用户的睡眠作息模式"
+    semantic_dynamic_score: 0.6
+  - var_name: "weight_target"
+    display_name: "体重目标"
+    values: ["维持现状", "减重中", "增重中"]
+    description: "用户的体重管理目标"
+    semantic_dynamic_score: 0.7
+  - var_name: "health_concern"
+    display_name: "近期健康关切"
+    values: ["颈椎问题", "睡眠问题", "消化问题", "无明显问题", "运动伤"]
+    description: "用户近期主要的健康困扰"
+    semantic_dynamic_score: 0.8
+
+学习:
+  - var_name: "current_focus"
+    display_name: "当前主要目标"
+    values: ["考研", "找实习", "保研", "出国", "毕设", "求职准备"]
+    description: "用户当前的学习/职业目标"
+    semantic_dynamic_score: 1.0
+  - var_name: "study_partner"
+    display_name: "学习搭档"
+    values: ["独自", "学习小组", "与同学", "在线社区"]
+    description: "用户当前的学习方式"
+    semantic_dynamic_score: 0.7
+  - var_name: "online_course_active"
+    display_name: "在学网课"
+    values: ["机器学习", "前端开发", "金融基础", "英语", "无在学课程"]
+    description: "用户当前正在学习的网络课程"
+    semantic_dynamic_score: 0.8
+  - var_name: "reading_genre"
+    display_name: "近期阅读类型"
+    values: ["技术书", "小说", "科普", "社科", "自传"]
+    description: "用户近期主要阅读的书籍类型"
+    semantic_dynamic_score: 0.6
+
+财务:
+  - var_name: "savings_goal"
+    display_name: "储蓄目标"
+    values: ["买房首付", "应急基金", "旅游基金", "教育基金", "无明确目标"]
+    description: "用户当前主要的储蓄目标"
+    semantic_dynamic_score: 0.6
+  - var_name: "budget_constraint"
+    display_name: "预算压力"
+    values: ["紧张", "适中", "宽裕"]
+    description: "用户当前的财务压力状况"
+    semantic_dynamic_score: 0.7
+  - var_name: "investment_style"
+    display_name: "投资风格"
+    values: ["保守型", "稳健型", "激进型", "不投资"]
+    description: "用户的投资偏好"
+    semantic_dynamic_score: 0.4
+  - var_name: "subscription_count"
+    display_name: "订阅服务数"
+    values: ["0-2项", "3-5项", "6+项"]
+    description: "用户当前的付费订阅服务数量"
+    semantic_dynamic_score: 0.6
+
+人际:
+  - var_name: "marital_status"
+    display_name: "婚姻状态"
+    values: ["单身", "恋爱中", "已婚", "离异"]
+    description: "用户当前的婚姻状态"
+    semantic_dynamic_score: 0.5
+  - var_name: "family_event"
+    display_name: "近期家庭事件"
+    values: ["无", "家人住院", "搬家", "添丁", "丧亲"]
+    description: "用户近期家庭中发生的重要事件"
+    semantic_dynamic_score: 0.9
+  - var_name: "social_circle_change"
+    display_name: "社交圈变化"
+    values: ["稳定", "扩大中", "缩小中"]
+    description: "用户近期的社交圈变化"
+    semantic_dynamic_score: 0.7
+  - var_name: "close_friend_status"
+    display_name: "好友联络情况"
+    values: ["经常联络", "偶尔联络", "几乎不联络"]
+    description: "用户与挚友的联络频率"
+    semantic_dynamic_score: 0.5
+
+兴趣:
+  - var_name: "weekend_activity"
+    display_name: "周末活动"
+    values: ["看电影", "打球", "学习", "回家", "宅家", "户外"]
+    description: "用户周末主要活动"
+    semantic_dynamic_score: 0.7
+  - var_name: "hobby_current"
+    display_name: "当前主要爱好"
+    values: ["摄影", "烘焙", "园艺", "游戏", "手工", "阅读", "音乐"]
+    description: "用户近期投入最多的爱好"
+    semantic_dynamic_score: 0.6
+  - var_name: "travel_plan"
+    display_name: "旅行计划"
+    values: ["近期无", "国内短途", "国内长途", "国外"]
+    description: "用户近期的旅行打算"
+    semantic_dynamic_score: 0.7

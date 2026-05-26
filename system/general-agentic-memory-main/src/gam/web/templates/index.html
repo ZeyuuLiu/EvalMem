@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠 GAM Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<body>
+    <div class="bg-pattern"></div>
+
+    <div class="container">
+        <div class="logo">🧠</div>
+        <h1 class="title">GAM Platform</h1>
+        <p class="subtitle">
+            Generalized Agent Memory — General Agentic Memory<br>
+            <span>Build, explore, and query knowledge bases from text and video</span>
+        </p>
+
+        <div class="cards">
+            <!-- Text GAM Card -->
+            <a href="/text" class="card text-card">
+                <span class="card-icon">📄</span>
+                <div class="card-title">Text GAM</div>
+                <p class="card-desc">
+                    Upload documents, chunk & organize them into a structured knowledge base using TextGAMAgent.
+                </p>
+                <ul class="card-features">
+                    <li><span class="check">✦</span> Intelligent text chunking</li>
+                    <li><span class="check">✦</span> Automatic directory organization</li>
+                    <li><span class="check">✦</span> Incremental content addition</li>
+                    <li><span class="check">✦</span> Q&A over text knowledge base</li>
+                </ul>
+                <div class="card-btn">
+                    Enter Text Platform <span class="arrow">→</span>
+                </div>
+            </a>
+
+            <!-- Video GAM Card -->
+            <a href="/video" class="card video-card">
+                <span class="card-icon">🎬</span>
+                <div class="card-title">Video GAM</div>
+                <p class="card-desc">
+                    Upload videos, analyze & segment them into a structured video knowledge base using VideoGAMAgent.
+                </p>
+                <ul class="card-features">
+                    <li><span class="check">✦</span> Video probing & segmentation</li>
+                    <li><span class="check">✦</span> Automatic scene descriptions</li>
+                    <li><span class="check">✦</span> Integrated video player</li>
+                    <li><span class="check">✦</span> Q&A with visual inspection</li>
+                </ul>
+                <div class="card-btn">
+                    Enter Video Platform <span class="arrow">→</span>
+                </div>
+            </a>
+
+            <!-- Long Horizontal Card -->
+            <a href="/long-horizontal" class="card lh-card">
+                <span class="card-icon">🔄</span>
+                <div class="card-title">Long Horizontal</div>
+                <p class="card-desc">
+                    Run a research agent with GAM memory on uploaded documents. Visualize the agent's search, memorize, and recall workflow in real-time.
+                </p>
+                <ul class="card-features">
+                    <li><span class="check">✦</span> BM25 document search</li>
+                    <li><span class="check">✦</span> Real-time agent conversation</li>
+                    <li><span class="check">✦</span> GAM memorize & recall visualization</li>
+                    <li><span class="check">✦</span> Q&A over built knowledge base</li>
+                </ul>
+                <div class="card-btn">
+                    Enter Long Horizontal <span class="arrow">→</span>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="footer">
+        GAM &middot; Generalized Agent Memory
+    </div>
+</body>
+</html>

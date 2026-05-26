@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠 GAM Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/text_platform.css") }}">
+</head>
+<body>
+    <div class="bg-pattern"></div>
+
+    <header class="header">
+        <div class="logo">
+            <span class="logo-icon">🧠</span>
+            <span class="logo-text">GAM Platform</span>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-secondary btn-sm" onclick="resetAll()">
+                🔄 New
+            </button>
+        </div>
+    </header>
+
+    <div class="app-container">
+        <!-- ========== Left Panel: Control & Navigation ========== -->
+        <div class="panel left-panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <span class="icon">📥</span>
+                    <span>Control Panel</span>
+                </div>
+                <span class="badge badge-info" id="process-status">Ready</span>
+            </div>
+            <div class="panel-body">
+                <!-- Upload Section -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <span>📤</span>
+                            <span>Input</span>
+                        </div>
+                    </div>
+                    <div class="section-content">
+                        <!-- Input Type Tabs -->
+                        <div class="input-tabs">
+                            <button class="input-tab active" data-tab="text" onclick="switchTab('text')">
+                                ✏️ Text
+                            </button>
+                            <button class="input-tab" data-tab="file" onclick="switchTab('file')">
+                                📄 File
+                            </button>
+                        </div>
+
+                        <!-- Text Input -->
+                        <div id="tab-text" class="tab-content">
+                            <textarea class="text-input" id="content-input" 
+                                      placeholder="Paste content here...
+
+Will be chunked and organized into GAM structure."></textarea>
+                        </div>
+
+                        <!-- File Upload -->
+                        <div id="tab-file" class="tab-content" style="display: none;">
+                            <div class="upload-zone" id="upload-zone">
+                                <span class="icon">📁</span>
+                                <div class="text">
+                                    <p>Drop file or <span>browse</span></p>
+                                    <p style="font-size: 10px; margin-top: 2px; color: var(--text-muted);">PDF, TXT, MD</p>
+                                </div>
+                                <input type="file" id="file-input" accept=".pdf,.txt,.md" multiple>
+                            </div>
+                        <div id="file-info" style="margin-top: 8px; display: none;">
+                            <div id="file-list" style="display: flex; flex-direction: column; gap: 6px;"></div>
+                        </div>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 8px;">
+                            <div class="toggle-row">
+                                <div>
+                                    <div class="form-label" style="margin-bottom: 2px;">File Segmentation</div>
+                                    <div class="form-hint" style="margin-top: 0; font-size: 10px;">
+                                        When closed: Each file is treated directly as a chunk.
+                                    </div>
+                                </div>
+                                <input type="checkbox" id="split-within-file" checked>
+                            </div>
+                        </div>
+
+                        <!-- Chunking Parameters -->
+                        <div class="form-group" id="chunking-params" style="margin-top: 12px;">
+                            <label class="form-label">⚙️ Chunking Parameters</label>
+                            <div style="display: flex; gap: 8px;">
+                                <div style="flex: 1;">
+                                    <label class="form-label" style="font-size: 10px;">Window Size (tokens)</label>
+                                    <input type="number" class="form-input" id="pipeline-window-size" value="8000" min="1000" max="100000">
+                                </div>
+                                <div style="flex: 1;">
+                                    <label class="form-label" style="font-size: 10px;">Overlap Size (tokens)</label>
+                                    <input type="number" class="form-input" id="pipeline-overlap-size" value="1000" min="100" max="20000">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 10px;">
+                            <div class="toggle-row">
+                                <div>
+                                    <div class="form-label" style="margin-bottom: 2px;">Incremental Add</div>
+                                    <div class="form-hint" style="margin-top: 0; font-size: 10px;">
+                                        When enabled: add chunks into current GAM instead of creating a new one.
+                                    </div>
+                                </div>
+                                <input type="checkbox" id="incremental-add">
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div style="display: flex; gap: 8px; margin-top: 8px;">
+                            <button class="btn btn-primary" id="process-btn" onclick="processContent()" style="flex: 1;">
+                                🚀 Build
+                            </button>
+                            <button class="btn btn-secondary" onclick="showLoadModal()" style="flex-shrink: 0;">
+                                📂 Load
+                            </button>
+                        </div>
+
+                        <!-- Output Paths -->
+                        <div class="output-paths" id="output-paths" style="display: none;">
+                            <div class="path-item">
+                                <span class="label">📦</span>
+                                <span class="value" id="chunk-path-display"></span>
+                            </div>
+                            <div class="path-item">
+                                <span class="label">🗂️</span>
+                                <span class="value" id="gam-path-display"></span>
+                            </div>
+                        </div>
+
+                        <!-- Progress -->
+                        <div class="progress-container" id="progress-container">
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
+                            </div>
+                            <div class="progress-status" id="progress-status">Initializing...</div>
+                            <div class="log-output" id="log-output"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- File Tree Section -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <span>🗂️</span>
+                            <span>Files</span>
+                        </div>
+                        <div style="display: flex; gap: 4px; align-items: center;">
+                            <span id="auto-refresh-indicator" style="display: none; font-size: 10px; color: var(--accent-info);">🔄</span>
+                            <button class="btn btn-secondary btn-sm" onclick="refreshTree()" style="padding: 3px 6px; font-size: 10px;">
+                                🔄
+                            </button>
+                        </div>
+                    </div>
+                    <div class="section-content" style="padding: 8px 12px;">
+                        <!-- Directory Selector -->
+                        <div class="dir-selector" style="margin-bottom: 8px;">
+                            <button class="dir-btn" id="btn-chunk-dir" onclick="switchDirectory('chunk')">
+                                📦 Chunks
+                            </button>
+                            <button class="dir-btn" id="btn-gam-dir" onclick="switchDirectory('gam')">
+                                🗂️ GAM
+                            </button>
+                        </div>
+                    </div>
+                    <div class="section-content scrollable" id="tree-view">
+                        <div class="empty-state">
+                            <span class="icon">📂</span>
+                            <h3>No output</h3>
+                            <p>Process content to view files</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span>📁</span>
+                    <span class="value" id="stat-dirs">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>📄</span>
+                    <span class="value" id="stat-files">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== Middle Panel: Reading Area ========== -->
+        <div class="panel middle-panel">
+            <div class="preview-path-bar">
+                <span class="icon">📄</span>
+                <span class="path" id="preview-path">Select a file to preview</span>
+            </div>
+            <div class="panel-body">
+                <div id="preview-empty-state" class="preview-empty-state">
+                    <span class="icon">📖</span>
+                    <h3>No file selected</h3>
+                    <p>Click on a file in the left panel to view its contents here. This is your reading area for exploring documents.</p>
+                </div>
+                <div class="content-preview" id="content-preview" style="display: none;"></div>
+            </div>
+        </div>
+
+        <!-- ========== Right Panel: Research Agent Chat ========== -->
+        <div class="panel right-panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <span class="icon">🔍</span>
+                    <span>Research Assistant</span>
+                </div>
+                <div class="chat-status">
+                    <span class="dot" id="chat-status-dot"></span>
+                    <span id="chat-status-text">Ready</span>
+                </div>
+            </div>
+            
+            <div class="chat-messages" id="chat-messages">
+                <div class="chat-empty-state" id="chat-empty-state">
+                    <span class="icon">💬</span>
+                    <h3>Ask about your GAM</h3>
+                    <p>The Research Agent will browse and search your knowledge base to answer questions.</p>
+                    <div class="chat-suggestions">
+                        <button class="chat-suggestion" onclick="askSuggestion('What is the main topic of this content?')">
+                            📝 What is the main topic?
+                        </button>
+                        <button class="chat-suggestion" onclick="askSuggestion('Summarize the key points')">
+                            📋 Summarize key points
+                        </button>
+                        <button class="chat-suggestion" onclick="askSuggestion('What are the conclusions?')">
+                            🎯 What are the conclusions?
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-input-container">
+                <div class="chat-input-wrapper">
+                    <textarea 
+                        class="chat-input" 
+                        id="chat-input" 
+                        placeholder="Ask a question..."
+                        rows="1"
+                        onkeydown="handleChatKeydown(event)"
+                        oninput="autoResizeInput(this)"
+                    ></textarea>
+                    <button class="chat-send-btn" id="chat-send-btn" onclick="sendMessage()">
+                        ➤
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Directory Modal -->
+    <div class="modal-overlay" id="load-modal">
+        <div class="modal" style="max-width: 700px;">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <span>📂</span>
+                    <span>Load Existing Directory</span>
+                </div>
+                <button class="modal-close" onclick="hideLoadModal()">✕</button>
+            </div>
+            <div class="modal-body" style="display: flex; gap: 16px;">
+                <!-- Left: Folder Browser -->
+                <div style="flex: 1; min-width: 0;">
+                    <div class="form-label" style="margin-bottom: 8px;">📁 Browse Folders</div>
+                    <div class="folder-browser">
+                        <div class="folder-browser-header">
+                            <button class="folder-nav-btn" onclick="browserGoUp()" title="Go up">⬆️</button>
+                            <div class="folder-current-path" id="browser-current-path">/</div>
+                            <button class="folder-nav-btn" onclick="browserRefresh()" title="Refresh">🔄</button>
+                        </div>
+                        <div class="folder-list" id="folder-list">
+                            <div class="folder-loading">Loading...</div>
+                        </div>
+                    </div>
+                    <div class="form-hint" style="margin-top: 6px;">Click folder to enter, click 📦/🗂️ button to select</div>
+                </div>
+                
+                <!-- Right: Selected Paths & Recent -->
+                <div style="width: 240px; flex-shrink: 0;">
+                    <div class="form-group">
+                        <label class="form-label">📦 Chunk Dir</label>
+                        <input type="text" class="form-input" id="load-chunk-path" 
+                               placeholder="Click to browse..." style="font-size: 10px;">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">🗂️ GAM Dir</label>
+                        <input type="text" class="form-input" id="load-gam-path" 
+                               placeholder="Click to browse..." style="font-size: 10px;">
+                    </div>
+                    
+                    <div class="quick-load-section" id="quick-load-section">
+                        <div class="quick-load-title">📋 Recent</div>
+                        <div class="quick-load-list" id="quick-load-list">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="hideLoadModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="loadDirectories()">📂 Load Selected</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for("static", filename="js/text_platform.js") }}"></script>
+</body>
+</html>

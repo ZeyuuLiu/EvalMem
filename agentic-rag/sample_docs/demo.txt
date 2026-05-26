@@ -1,0 +1,10 @@
+# Agentic RAG 示例知识
+
+本文件用于测试入库与检索。
+
+- 项目名称：Agentic RAG Demo
+- 向量库：Qdrant
+- 主模型：通过 vLLM 提供 OpenAI 兼容 API
+- Embedding：本地 Qwen3-Embedding
+
+若你在对话中问「示例知识里用的向量库是什么」，代理应能通过检索工具回答「Qdrant」。
